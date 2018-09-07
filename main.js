@@ -18,15 +18,56 @@ class TicTacToe {
             [1, 4, 7], [2, 5, 8], [3, 6, 9]
         ];
 
+        this.board = getBoard()
+
+        this.currentPlayer = firstPlayer
+
+        this.players = {
+            'O': ,
+            'X': ,
+        }
     }
 
     start() {
         this.printBoard()
+        prompt.start()
+        
+        prompt.get(['location'], (err, result) => { // arrow function
+            if (this.checkWin()) {
+                
+            } else {
+              
+            }
+        });
         
     }
 
     setBoard(location) {
-       
+        this.board[location] = this.currentPlayer
+    }
+
+    switchPlayer() {
+        if (this.currentPlayer === 'X') {
+            this.currentPlayer = 'O'
+        } else {
+            this.currentPlayer = 'X'
+        }
+    }
+
+    checkWin() {
+        let checker = 0;
+        for(let i=0; i < this.winningLines.length; i++) {
+            checker = 0;
+            for (let j = 0; j < this.winningLines[i].length; j++) {
+                if (this.board[this.winningLines[i][j]] === this.currentPlayer) {
+                  checker++;
+                }
+                if (checker === 3) {
+                    return true;
+                } 
+            }
+        }
+        return false;
     }
 
     printBoard() {
@@ -36,4 +77,5 @@ class TicTacToe {
     }
 }
 
-firstPlayer = "X"
+let game = new TicTacToe()
+game.start()
