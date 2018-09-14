@@ -1,80 +1,83 @@
 'use strict';
-
-var prompt = require('prompt')
-const firstPlayer =  'O'
-const getBoard = () => {
-    return {
-        1: '1', 2: '2', 3: '3',
-        4: '4', 5: '5', 6: '6',
-        7: '7', 8: '8', 9: '9'
-    }
+// Node.js
+var prompt = require('prompt') // readline
+var Player = require('./player.js')
+// import Player from './player.js'
+// การบ้านคือเสมอ
+const board = {
+    1: '1', 2: '2', 3: '3',
+    4: '4', 5: '5', 6: '6',
+    7: '7', 8: '8', 9: '9'
 }
 
+// class
 class TicTacToe {
     constructor() {
         this.winningLines = [
-            [1, 2, 3], [4, 5, 6], [7, 8, 9],
-            [1, 5, 9], [3, 5, 7],
-            [1, 4, 7], [2, 5, 8], [3, 6, 9]
+            [1, 2, 3], [4, 5, 6], [7, 8, 9], // horizontal
+            [1, 5, 6], [3, 5, 7], // diagonal
+            [1, 4, 7], [2, 5, 8], [7, 8, 9] // vertical
         ];
 
-        this.board = getBoard()
-
-        this.currentPlayer = firstPlayer
+        this.currentPlayer = 'O'
 
         this.players = {
-            'O': ,
-            'X': ,
+            'O': new Player("P'Champ"),
+            'X': new Player("P'Num"),
         }
+
     }
 
     start() {
         this.printBoard()
         prompt.start()
-        
-        prompt.get(['location'], (err, result) => { // arrow function
+        // input
+        prompt.get(['location'], (err, result) => {
+            //console.log(`:${result.index}`);
+            this.setBoard(result.location)
+
             if (this.checkWin()) {
-                
+                console.log(`${this.currentPlayer} : ${this.players[this.currentPlayer].name} Win!!`)
+                return
             } else {
-              
+                this.switchPlayer()
+                this.start()    
             }
         });
-        
-    }
-
-    setBoard(location) {
-        this.board[location] = this.currentPlayer
     }
 
     switchPlayer() {
         if (this.currentPlayer === 'X') {
-            this.currentPlayer = 'O'
+            this.currentPlayer = 'O';
         } else {
-            this.currentPlayer = 'X'
+            this.currentPlayer = 'X';
         }
+    }
+
+    setBoard(location) {
+        board[location] = this.currentPlayer
     }
 
     checkWin() {
         let checker = 0;
-        for(let i=0; i < this.winningLines.length; i++) {
+        for(let i=0; i< this.winningLines.length; i++) {
             checker = 0;
             for (let j = 0; j < this.winningLines[i].length; j++) {
-                if (this.board[this.winningLines[i][j]] === this.currentPlayer) {
+                if (board[this.winningLines[i][j]] === this.currentPlayer) {
                   checker++;
                 }
                 if (checker === 3) {
-                    return true;
-                } 
-            }
+                  return true;
+                }
+              }
         }
         return false;
     }
 
     printBoard() {
-        console.log(`| ${this.board[1]} | ${this.board[2]} | ${this.board[3]} |`)
-        console.log(`| ${this.board[4]} | ${this.board[5]} | ${this.board[6]} |`)
-        console.log(`| ${this.board[7]} | ${this.board[8]} | ${this.board[9]} |`)
+        console.log(`| ${board[1]} | ${board[2]} | ${board[3]} |\n| ${board[4]} | ${board[5]} | ${board[6]} |\n| ${board[7]} | ${board[8]} | ${board[9]} |`)
     }
+
 }
 
 let game = new TicTacToe()
